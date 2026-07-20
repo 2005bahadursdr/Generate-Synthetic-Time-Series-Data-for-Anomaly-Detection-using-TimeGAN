@@ -1,0 +1,29 @@
+services:
+  # Backend Web Service
+  - type: web
+    name: timegan-backend
+    env: python
+    rootDir: backend
+    buildCommand: pip install -r requirements.txt
+    startCommand: uvicorn app:app --host 0.0.0.0 --port $PORT
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.10.0
+      - key: MONGO_URI
+        sync: false # You must set this manually in the Render dashboard
+
+  # Frontend Static Site
+  - type: web
+    name: timegan-frontend
+    env: static
+    rootDir: frontend
+    buildCommand: npm install && npm run build
+    staticPublishPath: dist
+    envVars:
+      - key: NODE_VERSION
+        value: 18.0.0
+      - key: VITE_API_URL
+        fromService:
+          type: web
+          name: timegan-backend
+          envVarKey: RENDER_EXTERNAL_URL
