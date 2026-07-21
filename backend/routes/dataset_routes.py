@@ -81,15 +81,30 @@ from utils.data_processing import load_cmapss_data, load_intel_data
 import os
 
 @router.get("/list")
-async def list_datasets():
+async def list_datasets(request: Request):
     """
-    Endpoint to list available datasets (now using actual local files).
+    Endpoint to list available datasets (including uploaded ones from MongoDB).
     """
-    # Check if files exist
+    datasets = []
+    
+    # Read uploaded datasets from MongoDB
+    try:
+        if request and hasattr(request.app.state, 'db'):
+            uploaded = await request.app.state.db.datasets_metadata.find().to_list(100)
+            for i, ds in enumerate(uploaded):
+                datasets.append({
+                    "id": f"uploaded_{i}", 
+                    "name": ds.get("filename", "Uploaded Dataset"), 
+                    "type": "Uploaded", 
+                    "status": "Ready"
+                })
+    except Exception as e:
+        print(f"MongoDB Read Error for list: {e}")
+
+    # Check if local files exist
     cmapss_path = "datasets/industrial/NASA_CMAPSS/train_FD001.txt"
     intel_path = "datasets/iot/Intel/data.txt"
     
-    datasets = []
     if os.path.exists(cmapss_path):
         datasets.append({"id": "cmapss_fd001", "name": "NASA CMAPSS (Train FD001)", "type": "Industrial", "status": "Ready"})
     if os.path.exists(intel_path):
