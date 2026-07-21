@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { NavLink } from 'react-router-dom';
 import { LayoutDashboard, Upload, Settings, Activity, Sun, Moon } from 'lucide-react';
 
-const Sidebar = () => {
+const Sidebar = ({ onNavClick }) => {
   const [isDark, setIsDark] = useState(true);
 
   useEffect(() => {
@@ -43,6 +43,7 @@ const Sidebar = () => {
           <NavLink
             key={item.name}
             to={item.path}
+            onClick={onNavClick}
             className={({ isActive }) =>
               `flex items-center space-x-3 px-4 py-3 rounded-lg transition-all duration-200 ${
                 isActive 
