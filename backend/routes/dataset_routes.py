@@ -32,7 +32,7 @@ class HardwareData(BaseModel):
     is_anomaly: bool = False
 
 @router.post("/upload")
-async def upload_dataset(file: UploadFile = File(...)):
+async def upload_dataset(request: Request, file: UploadFile = File(...)):
     """
     Endpoint to upload a raw CSV sensor dataset.
     """
@@ -44,14 +44,27 @@ async def upload_dataset(file: UploadFile = File(...)):
         # Decode and read into pandas
         df = pd.read_csv(io.StringIO(contents.decode('utf-8')))
         
-        # In a real scenario, we'd save this to MongoDB or a local filesystem
-        # For now, we will just return some basic stats to the frontend
-        
         columns = df.columns.tolist()
         num_rows = len(df)
         
         # Generate a preview of the first 5 rows
         preview = df.head(5).to_dict(orient="records")
+        
+        # Calculate active sensors from columns
+        sensor_cols = [c for c in columns if c.lower() not in ['date', 'time', 'id', 'device', 'failure', 'timestamp']]
+        num_sensors = max(1, len(sensor_cols))
+        
+        # Save dataset metadata to MongoDB so dashboard stats can read it
+        try:
+            await request.app.state.db.datasets_metadata.insert_one({
+                "filename": file.filename,
+                "num_rows": num_rows,
+                "num_sensors": num_sensors,
+                "columns": columns,
+                "timestamp": time.time()
+            })
+        except Exception as e:
+            print(f"MongoDB Insert Error for dataset metadata: {e}")
         
         return {
             "message": "File uploaded successfully.",
@@ -118,7 +131,7 @@ async def preview_dataset(dataset_id: str):
         raise HTTPException(status_code=500, detail=f"Error loading dataset: {str(e)}")
 
 @router.get("/stats")
-async def get_system_stats():
+async def get_system_stats(request: Request):
     """
     Endpoint to get overall system dynamic statistics based on datasets.
     """
@@ -138,8 +151,18 @@ async def get_system_stats():
         total_points += 2313682
         active_sensors += 8
         
+    # Read uploaded datasets from MongoDB
+    try:
+        if request and hasattr(request.app.state, 'db'):
+            uploaded = await request.app.state.db.datasets_metadata.find().to_list(100)
+            for ds in uploaded:
+                total_points += ds.get("num_rows", 0)
+                active_sensors += ds.get("num_sensors", 0)
+    except Exception as e:
+        print(f"MongoDB Read Error for stats: {e}")
+        
     if total_points == 0 and active_sensors == 0:
-        # Fallback if running on Render where local dataset files might not exist
+        # Fallback if running on Render where local dataset files might not exist and no uploads yet
         total_points = 20631 + 10500
         active_sensors = 26 + 8
         
