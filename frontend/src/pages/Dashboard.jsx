@@ -145,11 +145,11 @@ const Dashboard = () => {
       </div>
 
       <div className="grid grid-cols-1 xl:grid-cols-3 gap-6 mt-8">
-        <div className="xl:col-span-2 glass p-6 rounded-2xl flex flex-col">
+        <div className="xl:col-span-2 glass p-4 sm:p-6 rounded-2xl flex flex-col min-w-0 overflow-hidden">
           <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-6">
             <h2 className="text-xl font-semibold text-slate-900 dark:text-white">Live Sensor Feed</h2>
             
-            <div className="flex items-center space-x-6 mt-4 sm:mt-0">
+            <div className="flex flex-wrap items-center gap-3 sm:gap-6 mt-4 sm:mt-0">
             <div className="flex items-center space-x-2 bg-white dark:bg-surface border border-slate-300 dark:border-gray-800 p-1 rounded-lg">
               <button 
                 onClick={() => { setSensorMode('simulated'); setWaitingForHardware(false); }}
@@ -219,7 +219,7 @@ const Dashboard = () => {
         </div>
 
         {/* Live Details Card */}
-        <div className="glass p-6 rounded-2xl flex flex-col">
+        <div className="glass p-4 sm:p-6 rounded-2xl flex flex-col min-w-0 overflow-hidden">
           <h2 className="text-xl font-semibold text-slate-900 dark:text-white mb-6">Live Sensor Details</h2>
           {latestData ? (
              <div className="flex-1 overflow-y-auto pr-1 space-y-4">
@@ -239,7 +239,7 @@ const Dashboard = () => {
                 </div>
                 
                 {/* ID and Location */}
-                <div className="grid grid-cols-2 gap-3">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                   <div className="bg-slate-50 dark:bg-surface/40 p-3 rounded-xl border border-slate-300 dark:border-gray-800/50">
                      <p className="text-xs text-slate-500 dark:text-gray-400 mb-1 flex items-center"><MapPin size={12} className="mr-1" /> Sensor ID</p>
                      <p className="text-sm font-medium text-slate-900 dark:text-white">{latestData.sensor_id}</p>
@@ -251,7 +251,7 @@ const Dashboard = () => {
                 </div>
 
                 {/* Metrics Grid */}
-                <div className="grid grid-cols-2 gap-3">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                   <DetailItem icon={Thermometer} label="Core Temp" value={`${latestData.temperature} °C`} color="text-orange-400" />
                   <DetailItem icon={Gauge} label="Pressure" value={`${latestData.pressure} PSI`} color="text-blue-400" />
                   <DetailItem icon={Droplets} label="Humidity" value={`${latestData.humidity} %`} color="text-cyan-400" />
