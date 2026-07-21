@@ -179,10 +179,11 @@ async def get_system_stats(request: Request):
     except Exception as e:
         print(f"MongoDB Read Error for stats: {e}")
         
-    if total_points == 0 and active_sensors == 0:
-        # Fallback if running on Render where local dataset files might not exist and no uploads yet
-        total_points = 20631 + 10500
-        active_sensors = 26 + 8
+    if not os.path.exists(cmapss_path) and not os.path.exists(intel_path):
+        # Fallback if running on Render where local dataset files might not exist
+        # Always add these to the total so the dashboard reflects the fallback datasets
+        total_points += 20631 + 10500
+        active_sensors += 26 + 8
         
     synthetic_samples = 0
     if training_state["status"] == "Complete":
