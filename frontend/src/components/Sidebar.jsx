@@ -58,11 +58,16 @@ const Sidebar = ({ onNavClick }) => {
         ))}
       </div>
       
-      <div className="p-6 text-sm text-slate-400 dark:text-gray-500 flex items-center justify-between mt-auto">
-        <span>Industry 4.0</span>
-        <button onClick={toggleTheme} className="p-2 rounded-full hover:bg-slate-100 dark:hover:bg-white/10 text-slate-500 dark:text-gray-400 hover:text-slate-900 dark:hover:text-white transition-colors" title="Toggle Theme">
-          {isDark ? <Sun size={18} /> : <Moon size={18} />}
-        </button>
+      <div className="p-6 mt-auto">
+        <div className="flex items-center justify-between text-sm text-slate-400 dark:text-gray-500 mb-3">
+          <span>Industry 4.0</span>
+          <button onClick={toggleTheme} className="p-2 rounded-full hover:bg-slate-100 dark:hover:bg-white/10 text-slate-500 dark:text-gray-400 hover:text-slate-900 dark:hover:text-white transition-colors" title="Toggle Theme">
+            {isDark ? <Sun size={18} /> : <Moon size={18} />}
+          </button>
+        </div>
+        <div className="text-xs text-slate-400/60 dark:text-gray-600 font-medium">
+          &copy; {new Date().getFullYear()} LalBahadurSahani
+        </div>
       </div>
     </div>
   );
