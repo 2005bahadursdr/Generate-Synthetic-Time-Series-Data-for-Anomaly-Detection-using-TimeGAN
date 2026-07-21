@@ -56,6 +56,9 @@ async def upload_dataset(request: Request, file: UploadFile = File(...)):
         
         # Save dataset metadata to MongoDB so dashboard stats can read it
         try:
+            # Remove any older uploads of the same file to prevent duplicates
+            await request.app.state.db.datasets_metadata.delete_many({"filename": file.filename})
+            
             await request.app.state.db.datasets_metadata.insert_one({
                 "filename": file.filename,
                 "num_rows": num_rows,
