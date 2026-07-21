@@ -16,13 +16,13 @@ const DetailItem = ({ icon: Icon, label, value, color }) => (
 );
 
 const MetricCard = ({ title, value, icon: Icon, colorClass }) => (
-  <div className="glass p-6 rounded-2xl flex items-center space-x-4">
-    <div className={`p-4 rounded-xl ${colorClass}`}>
+  <div className="glass p-4 sm:p-6 rounded-2xl flex items-center space-x-3 sm:space-x-4">
+    <div className={`p-3 sm:p-4 rounded-xl shrink-0 ${colorClass}`}>
       <Icon size={24} className="text-slate-900 dark:text-white" />
     </div>
-    <div>
-      <p className="text-sm text-slate-500 dark:text-gray-400 font-medium">{title}</p>
-      <h3 className="text-2xl font-bold text-slate-900 dark:text-white mt-1">{value}</h3>
+    <div className="flex-1 min-w-0">
+      <p className="text-xs sm:text-sm text-slate-500 dark:text-gray-400 font-medium truncate" title={title}>{title}</p>
+      <h3 className="text-lg sm:text-2xl font-bold text-slate-900 dark:text-white mt-1 truncate" title={value}>{value}</h3>
     </div>
   </div>
 );
