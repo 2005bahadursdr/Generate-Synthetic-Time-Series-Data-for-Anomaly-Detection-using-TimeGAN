@@ -113,12 +113,12 @@ async def list_datasets(request: Request):
     if os.path.exists(intel_path):
         datasets.append({"id": "intel_lab", "name": "Intel Berkeley Lab Sensor Data", "type": "IoT", "status": "Ready"})
         
-    if not datasets:
-        # Fallback if running from a different working directory or files not found
-        datasets = [
+    if not os.path.exists(cmapss_path) and not os.path.exists(intel_path):
+        # Fallback if running on Render where local files are missing (always show these)
+        datasets.extend([
             {"id": "ds_1", "name": "NASA Turbofan Engine Dataset (CMAPSS)", "rows": 20631, "status": "Ready"},
             {"id": "ds_2", "name": "Intel Berkeley Lab Sensor Dataset", "rows": 10500, "status": "Ready"}
-        ]
+        ])
         
     return {"datasets": datasets}
 
