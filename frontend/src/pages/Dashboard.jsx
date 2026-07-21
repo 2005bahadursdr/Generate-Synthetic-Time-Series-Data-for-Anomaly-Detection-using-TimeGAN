@@ -21,8 +21,8 @@ const MetricCard = ({ title, value, icon: Icon, colorClass }) => (
       <Icon size={24} className="text-slate-900 dark:text-white" />
     </div>
     <div className="flex-1 min-w-0">
-      <p className="text-xs sm:text-sm text-slate-500 dark:text-gray-400 font-medium truncate" title={title}>{title}</p>
-      <h3 className="text-lg sm:text-2xl font-bold text-slate-900 dark:text-white mt-1 truncate" title={value}>{value}</h3>
+      <p className="text-xs sm:text-sm text-slate-500 dark:text-gray-400 font-medium leading-tight">{title}</p>
+      <h3 className="text-lg sm:text-2xl font-bold text-slate-900 dark:text-white mt-1 break-all sm:break-normal">{value}</h3>
     </div>
   </div>
 );
@@ -137,7 +137,7 @@ const Dashboard = () => {
         <p className="text-slate-500 dark:text-gray-400 mt-2">Live monitoring of IoT sensors and anomaly detection performance.</p>
       </header>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+      <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4 sm:gap-6">
         <MetricCard title="Active Sensors" value={activeSensors.toLocaleString()} icon={Activity} colorClass="bg-blue-500/20 shadow-[0_0_15px_rgba(59,130,246,0.3)]" />
         <MetricCard title="Total Data Points" value={totalPoints > 1000000 ? (totalPoints / 1000000).toFixed(2) + "M" : totalPoints.toLocaleString()} icon={Database} colorClass="bg-emerald-500/20 shadow-[0_0_15px_rgba(16,185,129,0.3)]" />
         <MetricCard title="Synthetic Samples" value={syntheticSamples > 0 ? (syntheticSamples > 1000 ? (syntheticSamples/1000).toFixed(1) + "K" : syntheticSamples) : "0"} icon={Zap} colorClass="bg-violet-500/20 shadow-[0_0_15px_rgba(139,92,246,0.3)]" />
