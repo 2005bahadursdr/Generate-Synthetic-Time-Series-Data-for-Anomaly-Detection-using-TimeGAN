@@ -3,13 +3,14 @@ import { NavLink } from 'react-router-dom';
 import { LayoutDashboard, Upload, Settings, Activity, Sun, Moon } from 'lucide-react';
 
 const Sidebar = ({ onNavClick }) => {
-  const [isDark, setIsDark] = useState(true);
+  const [isDark, setIsDark] = useState(false);
 
   useEffect(() => {
-    if (document.documentElement.classList.contains('dark') || !('theme' in localStorage)) {
+    if (localStorage.getItem('theme') === 'dark') {
       document.documentElement.classList.add('dark');
       setIsDark(true);
     } else {
+      document.documentElement.classList.remove('dark');
       setIsDark(false);
     }
   }, []);
