@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
-import { UploadCloud, FileType, CheckCircle } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
+import { UploadCloud, FileType, CheckCircle, ArrowRight } from 'lucide-react';
 import axios from 'axios';
 
 const DataUpload = () => {
+  const navigate = useNavigate();
   const [file, setFile] = useState(null);
   const [uploading, setUploading] = useState(false);
   const [result, setResult] = useState(null);
@@ -92,6 +94,16 @@ const DataUpload = () => {
             <div className="col-span-2">
               <strong>Features:</strong> {result.columns.join(', ')}
             </div>
+          </div>
+          
+          <div className="mt-8 flex justify-end border-t border-slate-200 dark:border-gray-800 pt-6">
+            <button 
+              onClick={() => navigate('/train-timegan')}
+              className="bg-primary hover:bg-blue-600 text-white px-6 py-3 rounded-lg font-bold transition-all flex items-center space-x-2 shadow-[0_0_15px_rgba(59,130,246,0.4)]"
+            >
+              <span>Proceed to Training</span>
+              <ArrowRight size={20} />
+            </button>
           </div>
         </div>
       )}
