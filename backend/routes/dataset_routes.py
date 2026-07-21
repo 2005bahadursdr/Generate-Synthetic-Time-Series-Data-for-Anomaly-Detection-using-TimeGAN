@@ -117,7 +117,7 @@ async def list_datasets(request: Request):
         # Fallback if running on Render where local files are missing (always show these)
         datasets.extend([
             {"id": "ds_1", "name": "NASA Turbofan Engine Dataset (CMAPSS)", "rows": 20631, "status": "Ready"},
-            {"id": "ds_2", "name": "Intel Berkeley Lab Sensor Dataset", "rows": 10500, "status": "Ready"}
+            {"id": "ds_2", "name": "Intel Berkeley Lab Sensor Dataset", "rows": 2313682, "status": "Ready"}
         ])
         
     return {"datasets": datasets}
@@ -182,7 +182,7 @@ async def get_system_stats(request: Request):
     if not os.path.exists(cmapss_path) and not os.path.exists(intel_path):
         # Fallback if running on Render where local dataset files might not exist
         # Always add these to the total so the dashboard reflects the fallback datasets
-        total_points += 20631 + 10500
+        total_points += 20631 + 2313682
         active_sensors += 26 + 8
         
     synthetic_samples = 0
